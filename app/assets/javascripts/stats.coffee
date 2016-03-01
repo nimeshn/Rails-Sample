@@ -47,13 +47,7 @@ $(document).on "ready page:load", ->
 		else
 			orderDesc = false
 		orderBy = $(this).attr("data-field-name")
-		
-		# clear every table header's sort attribute and remove glyph
-		$("#stat_table th").each ->
-			$(this).find("span").removeClass("glyphicon-triangle-bottom").removeClass("glyphicon-triangle-top")
-			$(this).removeAttr("data-field-order-desc")
-			return
-		
+				
 		getStatsData($(this), $("#fetchRows").val(), orderBy, orderDesc)		
 		return
 
@@ -69,16 +63,20 @@ $(document).on "ready page:load", ->
 				alert textStatus + ":" + errorThrown
 			success: (data, textStatus, jqXHR) ->
 				appendStats data
+				$("#spnRecords").text("Fetched #{rowCount} records sorted by #{orderBy}")
 				
+				# clear every table header's sort attribute and remove glyph
+				$("#stat_table th").each ->
+					$(this).find("span").removeClass("glyphicon-triangle-bottom").removeClass("glyphicon-triangle-top")
+					$(this).removeAttr("data-field-order-desc")
+
 				# set the toggled sort attribute on the clicked header
 				clickedCol.attr("data-field-order-desc", orderDesc)
 				if orderDesc
 					clickedCol.find("span").addClass "glyphicon-triangle-bottom"
 				else
 					clickedCol.find("span").addClass "glyphicon-triangle-top"
-				$("#spnRecords").text("Fetched #{rowCount} records sorted by #{orderBy}")
 				$("#pleaseWaitDialog").modal("hide")
-
 
 	# handle Get Stats button click 
 	$("#btnFetchRows").click ->
