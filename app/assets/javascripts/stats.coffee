@@ -62,14 +62,15 @@ $(document).on "ready page:load", ->
 				$("#pleaseWaitDialog").modal("hide")
 				alert textStatus + ":" + errorThrown
 			success: (data, textStatus, jqXHR) ->
-				appendStats data
 				$("#spnRecords").text("Fetched #{rowCount} records sorted by #{orderBy}")
 				
 				# clear every table header's sort attribute and remove glyph
 				$("#stat_table th").each ->
 					$(this).find("span").removeClass("glyphicon-triangle-bottom").removeClass("glyphicon-triangle-top")
 					$(this).removeAttr("data-field-order-desc")
-
+					
+				appendStats data
+				
 				# set the toggled sort attribute on the clicked header
 				clickedCol.attr("data-field-order-desc", orderDesc)
 				if orderDesc
