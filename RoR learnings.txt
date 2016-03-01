@@ -11,3 +11,6 @@ And then reinstall the bundle adjusting the dependencies for the new Gem version
 bundle update coffee-script-source
 
 and then restart the server
+
+https://pure-gorge-67011.herokuapp.com/
+https://git.heroku.com/pure-gorge-67011.git

@@ -2,13 +2,17 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# Lets hook up on document load event
 $(document).on "ready page:load", ->
+
+	# helper function to format float as string with decimal places
 	formatNumber = (n, dec) ->	
 		if typeof n != typeof undefined && n != ""
 			n.toFixed(dec).replace(/(\d)(?=(\d{3})+\.)/g, "$1,")
 		else
 			""
-		
+	
+	# function to create a HTML text for table rows
 	appendStats = (statsList) ->
 		htmlStats = ""
 		for key, stat of statsList
@@ -31,7 +35,9 @@ $(document).on "ready page:load", ->
 		$("#stat_table tbody").html htmlStats
 		
 
+	# hook up on click events for all table headers
 	$("#stat_table th").click ->
+		# get clicked columns field and current sort direction
 		orderDesc = $(this).attr("data-field-order-desc")
 		if typeof orderDesc != typeof undefined && orderDesc != false
 			if orderDesc == "true"
@@ -42,30 +48,39 @@ $(document).on "ready page:load", ->
 			orderDesc = false
 		orderBy = $(this).attr("data-field-name")
 		
+		# clear every table header's sort attribute and remove glyph
 		$("#stat_table th").each ->
 			$(this).find("span").removeClass("glyphicon-triangle-bottom").removeClass("glyphicon-triangle-top")
 			$(this).removeAttr("data-field-order-desc")
 			return
 		
-		$(this).attr("data-field-order-desc", orderDesc)		
-		if orderDesc
-			$(this).find("span").addClass "glyphicon-triangle-bottom"
-		else
-			$(this).find("span").addClass "glyphicon-triangle-top"
-		getStatsData($("#fetchRows").val(), orderBy, orderDesc)		
+		getStatsData($(this), $("#fetchRows").val(), orderBy, orderDesc)		
 		return
 
-	getStatsData = (rowCount, orderBy, orderDesc) ->
+	# wrapper function to get the new sorted data and update header glyph
+	getStatsData = (clickedCol, rowCount, orderBy, orderDesc) ->
+		$("#pleaseWaitDialog").modal({backdrop: false})
 		$.ajax
 			url: "/stats/ordered/#{rowCount}/#{orderBy}/#{orderDesc}",
 			type: "GET"
 			dataType: "json"
 			error: (jqXHR, textStatus, errorThrown) ->
+				$("#pleaseWaitDialog").modal("hide")
 				alert textStatus + ":" + errorThrown
 			success: (data, textStatus, jqXHR) ->
 				appendStats data
+				
+				# set the toggled sort attribute on the clicked header
+				clickedCol.attr("data-field-order-desc", orderDesc)
+				if orderDesc
+					clickedCol.find("span").addClass "glyphicon-triangle-bottom"
+				else
+					clickedCol.find("span").addClass "glyphicon-triangle-top"
 				$("#spnRecords").text("Fetched #{rowCount} records sorted by #{orderBy}")
+				$("#pleaseWaitDialog").modal("hide")
 
+
+	# handle Get Stats button click 
 	$("#btnFetchRows").click ->
 		if $("#stat_table th[data-field-order-desc='true']").length
 			columnField = $("#stat_table th[data-field-order-desc='true']")
@@ -75,4 +90,4 @@ $(document).on "ready page:load", ->
 			columnField = null
 		
 		if (columnField != null)
-			getStatsData $("#fetchRows").val(), columnField.attr("data-field-name"), columnField.attr("data-field-order-desc")
+			getStatsData columnField, $("#fetchRows").val(), columnField.attr("data-field-name"), columnField.attr("data-field-order-desc")
