@@ -67,7 +67,7 @@ $(document).on "ready page:load", ->
 				$("#pleaseWaitDialog").modal("hide")
 				alert textStatus + ":" + errorThrown
 			success: (data, textStatus, jqXHR) ->
-				$("#spnRecords").text("Fetched #{rowCount} records sorted by #{orderBy}")
+				$("#spnRecords").text("Fetched #{data.length} records sorted by #{orderBy}")
 			
 				appendStats data
 				
