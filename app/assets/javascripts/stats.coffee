@@ -59,7 +59,7 @@ $(document).on "ready page:load", ->
 
 	# wrapper function to get the new sorted data and update header glyph
 	getStatsData = (clickedCol, rowCount, orderBy, orderDesc) ->
-		$("#pleaseWaitDialog").modal({backdrop: false})
+		$("#pleaseWaitDialog").modal("show")
 		$.ajax
 			url: "/stats/ordered/#{rowCount}/#{orderBy}/#{orderDesc}",
 			type: "GET"
