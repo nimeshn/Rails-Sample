@@ -1,0 +1,56 @@
+<div class="row text-center">
+	<h1>Player Stats</h1>
+	<hr/>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-3">
+			<input type="number" id="fetchRows" name="fetchRows" ng-model="fetchRows" 
+						min="25" max="500" step="25" value="25"/>
+			<button id="btnFetchRows" class="btn btn-success">Get Stats</button>
+		</div>
+		<div class="col-sm-9">
+			<span id="spnRecords"></span>
+		</div>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<table id="stat_table" class="table table-striped table-hover table-condensed table-bordered">
+		<thead>
+			<tr>
+				<th role="button" data-field-name="year">Year <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="team_name">Team Name <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="team_city">Team City <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="surname">Surname <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="given_name">Given name <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="position">Position <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="avg" data-field-order-desc="true" class="text-right">Batting Average<span class="glyphicon glyphicon-triangle-bottom"></span></th>
+				<th role="button" data-field-name="home_runs" class="text-right">Home Runs <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="rbi" class="text-right">RBI <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="runs" class="text-right">Runs <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="sbp" class="text-right">Stolen Base % <span class="glyphicon"></span></th>
+				<th role="button" data-field-name="ops" class="text-right">On-Base + Slugging <span class="glyphicon"></span></th>
+			</tr>
+		</thead>		
+		<tbody>
+			<% @player_stats.each {|stat| %>
+			<tr>
+				<td><%= stat[:year] %></td>
+				<td><%= stat[:team_name] %></td>
+				<td><%= stat[:team_city] %></td>
+				<td><%= stat[:surname] %></td>
+				<td><%= stat[:given_name] %></td>
+				<td><%= stat[:position] %></td>
+				<td class="text-right"><%= number_with_precision(stat[:avg], precision:4) %></td>
+				<td class="text-right"><%= stat[:home_runs] %></td>
+				<td class="text-right"><%= stat[:rbi] %></td>
+				<td class="text-right"><%= stat[:runs] %></td>
+				<td class="text-right"><%= number_with_precision(stat[:sbp], precision:2) %></td>
+				<td class="text-right"><%= number_with_precision(stat[:ops], precision:4) %></td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+	<hr/>	
+</div>
