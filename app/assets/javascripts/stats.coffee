@@ -60,7 +60,7 @@ $(document).on "ready page:load", ->
 	getStatsData = (clickedCol, rowCount, orderBy, orderDesc) ->
 		$("#pleaseWaitDialog").modal("show")
 		$.ajax
-			url: "/stats/ordered/#{rowCount}/#{orderBy}/#{orderDesc}",
+			url: "/stats/index/#{rowCount}/#{orderBy}/#{orderDesc}.json",
 			type: "GET"
 			dataType: "json"
 			error: (jqXHR, textStatus, errorThrown) ->

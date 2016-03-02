@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
   # default action for player stats
-  get 'stats/index' => 'stats#index', as: :stats
+  get 'stats/index(/:row_count(/:order_by(/:order_desc)))' => 'stats#index', as: :stats
   
-  # route for AJAX based column sort
-  get 'stats/ordered/:row_count/:order_by/:order_desc'=>'stats#ordered_data', as: :ordereddata
-    
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
